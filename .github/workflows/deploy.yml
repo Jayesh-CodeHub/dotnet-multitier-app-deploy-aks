@@ -7,7 +7,7 @@ on:
 
 env:
   IMAGE_NAME: jayyy48/dotnet-mongo-crud
-  TAG: latest
+  TAG: ${{ github.sha }}
 
 jobs:
   build-and-deploy:
@@ -38,3 +38,6 @@ jobs:
       run: |
         kubectl create ns webapps --dry-run=client -o yaml | kubectl apply -f -
         kubectl apply -f dotnet-mongo-app.yaml -n webapps
+    - name: Verify Deployment
+      run: kubectl rollout status deployment/dotnet-mongo-app -n webapps
+
