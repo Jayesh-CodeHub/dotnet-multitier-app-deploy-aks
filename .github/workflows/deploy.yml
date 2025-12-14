@@ -39,5 +39,9 @@ jobs:
         kubectl create ns webapps --dry-run=client -o yaml | kubectl apply -f -
         kubectl apply -f dotnet-mongo-app.yaml -n webapps
     - name: Verify Deployment
-      run: kubectl rollout status deployment/dotnet-mongo-app -n webapps
+      run: kubectl rollout status deployment/dotnet-webapp -n webapps
+    - name: Verify MongoDB Deployment
+      run: kubectl rollout status deployment/mongodb -n webapps
+
+
 
