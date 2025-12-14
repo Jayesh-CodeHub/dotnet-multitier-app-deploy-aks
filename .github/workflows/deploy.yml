@@ -1,4 +1,4 @@
-name: CI/CD to AKS 
+name: CI/CD to AKS using Kubeconfig Secret
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4   # bump to latest version
 
     - name: Login to DockerHub
       uses: docker/login-action@v2
@@ -30,7 +30,9 @@ jobs:
       run: docker push $IMAGE_NAME:$TAG
 
     - name: Setup kubeconfig from secret
-      run: echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > $HOME/.kube/config
+      run: |
+        mkdir -p $HOME/.kube
+        echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > $HOME/.kube/config
 
     - name: Deploy to AKS
       run: |
